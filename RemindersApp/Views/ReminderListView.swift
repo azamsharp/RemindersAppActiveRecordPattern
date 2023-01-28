@@ -8,13 +8,31 @@
 import SwiftUI
 
 struct ReminderListView: View {
+    
+    let reminders: FetchedResults<Reminder>
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(reminders) { reminder in
+            Text(reminder.title ?? "")
+        }
     }
 }
 
-struct ReminderListView_Previews: PreviewProvider {
+struct ReminderListViewContainer_Previews: PreviewProvider {
+    
+    struct ReminderListViewContainer: View {
+        
+        @FetchRequest(sortDescriptors: [])
+        private var reminderResults: FetchedResults<Reminder>
+        
+        var body: some View {
+            // ReminderListView is the view I want to preview
+            ReminderListView(reminders: reminderResults)
+        }
+    }
+    
     static var previews: some View {
-        ReminderListView()
+        ReminderListViewContainer()
+            .environment(\.managedObjectContext, CoreDataProvider.shared.persistentContainer.viewContext)
     }
 }

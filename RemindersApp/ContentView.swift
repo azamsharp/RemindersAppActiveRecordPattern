@@ -21,12 +21,16 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 TextField("Name", text: $name)
                     .textFieldStyle(.roundedBorder)
                 List(myListResults) { myList in
-                    Text(myList.name ?? "")
+                    NavigationLink {
+                        MyListDetailView(myList: myList)
+                    } label: {
+                        Text(myList.name ?? "")
+                    }
                 }
             }
             .padding()
@@ -52,7 +56,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-            .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
+        NavigationStack {
+            ContentView()
+                .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
+        }
     }
 }

@@ -28,5 +28,12 @@ extension Model where Self: NSManagedObject {
         request.sortDescriptors = []
         return request
     }
+    
+    static func byId(_ id: NSManagedObjectID) -> NSFetchRequest<Self> {
+        let request = NSFetchRequest<Self>(entityName: String(describing: self))
+        request.sortDescriptors = []
+        request.predicate = NSPredicate(format: "SELF = %@", id)
+        return request
+    }
 }
 
