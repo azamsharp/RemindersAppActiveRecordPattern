@@ -13,11 +13,21 @@ struct ContentView: View {
     private var myListResults: FetchedResults<MyList>
     
     @Environment(\.managedObjectContext) private var viewContext
-    
     @State private var name: String = ""
     
     private var isFormValid: Bool {
         !name.isEmpty
+    }
+    
+    private func saveMyList() {
+        // add a new list
+        do {
+            let myList = MyList(context: viewContext)
+            myList.name = name
+            try myList.save()
+        } catch {
+            print(error)
+        }
     }
     
     var body: some View {
@@ -25,6 +35,11 @@ struct ContentView: View {
             VStack {
                 TextField("Name", text: $name)
                     .textFieldStyle(.roundedBorder)
+                    .onSubmit {
+                        if isFormValid {
+                           saveMyList()
+                        }
+                    }
                 List(myListResults) { myList in
                     NavigationLink {
                         MyListDetailView(myList: myList)
@@ -37,17 +52,9 @@ struct ContentView: View {
             .navigationTitle("My Lists")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Save") {
+                        Button("Add Reminder") {
                             
-                            do {
-                                let myList = MyList(context: viewContext)
-                                myList.name = name
-                                try myList.save()
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                            
-                        }.disabled(!isFormValid)
+                        }
                     }
                 }
         }

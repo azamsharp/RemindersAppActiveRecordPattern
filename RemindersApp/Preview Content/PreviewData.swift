@@ -15,5 +15,14 @@ class PreviewData {
         return myList
     }
     
+    static var reminder: Reminder {
+        let myList = MyList(context: CoreDataProvider.shared.viewContext)
+        myList.name = "Groceries"
+        let reminder = Reminder(context: CoreDataProvider.shared.viewContext)
+        reminder.title = "Reminder 1"
+        reminder.list = myList
+        return reminder 
+    }
+    
 }
 
