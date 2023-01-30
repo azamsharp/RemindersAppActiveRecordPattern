@@ -11,7 +11,7 @@ struct ReminderDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    @ObservedObject var reminder: Reminder
+    let reminder: Reminder
     
     @State private var title: String = ""
     
@@ -23,6 +23,16 @@ struct ReminderDetailView: View {
                 try? reminder.save()
                 dismiss() 
             }
+            
+            Button("Delete") {
+                do {
+                    try reminder.delete()
+                    dismiss() 
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            
         }.onAppear {
             title = reminder.title ?? ""
         }

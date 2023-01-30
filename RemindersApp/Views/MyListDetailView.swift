@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MyListDetailView: View {
     
-    @ObservedObject var myList: MyList
+    let myList: MyList
     
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -42,26 +42,7 @@ struct MyListDetailView: View {
     
     var body: some View {
         VStack {
-            
-            // OPTION 1
-            // Goes to db and fetch it first time
-            // on future requests, gets the records from the view context instead from the database
-            /*
-            let reminders: [Reminder] = myList.reminders?.toArray() ?? []
-            if !reminders.isEmpty {
-                ReminderListView2(reminders: reminders)
-            } */
-            
-            // OPTION 2
-            // This access database every time
-            // The objects are tracked, this means they are refreshed on the screen automatically
-            /* DECLARED ON THE TOP
-             @FetchRequest(sortDescriptors: [])
-             private var reminderResults: FetchedResults<Reminder>
-             */
-            
             ReminderListView(reminders: reminderResults)
-            
         }.navigationTitle(myList.name ?? "")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
